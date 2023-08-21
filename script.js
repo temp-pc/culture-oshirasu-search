@@ -99,7 +99,7 @@ function filterButton(selectedCategory, buttonId) {
 document.querySelectorAll('.dropdown .btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const btnId = btn.id;
-    filterButton(btnId, btnId)
+    filterButton(`${btnId} `, btnId)
   });
 })
 
@@ -113,7 +113,7 @@ function filterLinks() {
     .map(button => button.innerText)
     .filter(text => !text.toLowerCase().includes("category"));
 
-  const category3ButtonText = document.querySelector('#category-3').innerText;
+  const category3ButtonText = document.querySelector('#category-3').innerText.trim();
   const maruNumbers = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪", "⑫", "⑬", "⑭", "⑮", "⑯", "⑰", "⑱", "⑲", "⑳", "㉑", "㉒", "㉓", "㉔", "㉕", "㉖", "㉗", "㉘", "㉙", "㉚", "㉛", "㉜", "㉝", "㉞", "㉟", "㊱", "㊲", "㊳", "㊴", "㊵", "㊶", "㊷", "㊸", "㊹"]
 
   for (var i = 0; i < li.length; i++) {
@@ -155,7 +155,7 @@ document.querySelector('#clear-button').addEventListener('click', ()=>{
 
 document.querySelector('#title').addEventListener('click', ()=>{
   document.querySelectorAll('.dropdown .btn').forEach(btn => {
-    btn.innerText = btn.id;
+    btn.innerText = `${btn.id} `;
   });
   document.querySelector('#searchInput').value = "";
   document.querySelector('#clear-button').classList.add('none')
