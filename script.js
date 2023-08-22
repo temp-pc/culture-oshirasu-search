@@ -18,10 +18,43 @@ document.addEventListener("DOMContentLoaded", function () {
         const h4 = document.createElement("h4");
         h4.textContent = item.title;
         a.appendChild(h4);
+
+
+        const divElement = document.createElement("div")
+        divElement.classList.add("row", "d-flex", "justify-content-between")
+
         const p = document.createElement("p");
         p.textContent = `${item.timestamp}  ${item.timerange}`;
-        a.appendChild(p);
+
+        const buttonElement = document.createElement("button")
+        buttonElement.textContent = "add to list"
+        buttonElement.classList.add("addButton", "btn")
+        buttonElement.setAttribute('onclick', `addToList(this)`);
+
+        const addIcon = document.createElement("img")
+        addIcon.setAttribute("src", "images/add_black_24dp.svg")
+        addIcon.classList.add("addIcon")
+        const doneIcon = document.createElement("img")
+        doneIcon.setAttribute("src", "images/done_black_24dp.svg")
+        doneIcon.classList.add("doneIcon")
+
+        const isAdded = savedList.URL_list.includes(a.href);
+        buttonElement.classList.toggle("isAdded", isAdded)
+        addIcon.classList.toggle("none", isAdded)
+        doneIcon.classList.toggle("none", !isAdded)
+
+        buttonElement.appendChild(addIcon)
+        buttonElement.appendChild(doneIcon)
+
+        divElement.appendChild(p)
+        divElement.appendChild(buttonElement)
+
         li.appendChild(a);
+        li.appendChild(divElement);
+
+        hr = document.createElement("hr")
+        li.appendChild(hr)
+
         linkList.appendChild(li);
       });
 
@@ -76,12 +109,12 @@ document.addEventListener("DOMContentLoaded", function () {
 // 表示されているリンク数をカウント
 const articleCounter = document.querySelector("#articleCounter");
 let articlesNumber = 0;
-function updateArticlesNumber(){
+function updateArticlesNumber() {
   let count = 0;
   const liList = document.querySelectorAll("#linkList li");
   Array.from(liList).filter(li => {
     const liStyle = getComputedStyle(li);
-    if(liStyle.display !== "none"){
+    if (liStyle.display !== "none") {
       count += 1;
     }
   })
@@ -104,37 +137,47 @@ document.querySelectorAll('.dropdown .btn').forEach(btn => {
 })
 
 // カテゴリーボタンと検索ワードを元にリンクを絞り込み
-function filterLinks() {
-  var li = document.querySelectorAll('#linkList li');
-  var searchInputValue = document.querySelector('#searchInput').value.toUpperCase();
-  var searchInputTexts = searchInputValue.split(/[ 　]+/);
-  var searchButtons = document.querySelectorAll('.searchButton:not(#category-3)');
-  var searchButtonTexts = Array.from(searchButtons)
+function filterLinks(showMyList) {
+  const li = document.querySelectorAll('#linkList li');
+  const searchInputValue = document.querySelector('#searchInput').value.toUpperCase();
+  const searchInputTexts = searchInputValue.split(/[ 　]+/);
+  const searchButtons = document.querySelectorAll('.searchButton:not(#category-3)');
+  const searchButtonTexts = Array.from(searchButtons)
     .map(button => button.innerText)
     .filter(text => !text.toLowerCase().includes("category"));
 
   const category3ButtonText = document.querySelector('#category-3').innerText.trim();
   const maruNumbers = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪", "⑫", "⑬", "⑭", "⑮", "⑯", "⑰", "⑱", "⑲", "⑳", "㉑", "㉒", "㉓", "㉔", "㉕", "㉖", "㉗", "㉘", "㉙", "㉚", "㉛", "㉜", "㉝", "㉞", "㉟", "㊱", "㊲", "㊳", "㊴", "㊵", "㊶", "㊷", "㊸", "㊹"]
 
-  for (var i = 0; i < li.length; i++) {
-    var h4 = li[i].getElementsByTagName('h4')[0];
-    var txtValue = h4.textContent || h4.innerText;
-    var shouldDisplay = false;
+  for (let i = 0; i < li.length; i++) {
+    const h4 = li[i].querySelector('h4');
+    const txtValue = h4.textContent || h4.innerText;
+    const linkURL = li[i].querySelector('a').getAttribute('href');
+    let shouldDisplay = false;
 
-    if (
-      searchInputTexts.every(inputText => txtValue.toUpperCase().includes(inputText.toUpperCase()))
-      &&
-      searchButtonTexts.every(text => txtValue.includes(text))
-      &&
-      (
-        category3ButtonText == "category-3"
-        ||
-        txtValue.toUpperCase().includes(`「${category3ButtonText}`)
-        ||
-        maruNumbers.some(maruNumber => txtValue.includes(`${category3ButtonText}${maruNumber}`))
-      )
-    ) {
-      shouldDisplay = true;
+    if (showMyList) {
+      if (savedList.URL_list.includes(linkURL)) {
+        shouldDisplay = true;
+      }
+    } else if (showMyList === false) {
+      shouldDisplay = true;  //showMyListの解除の場合は全てを表示
+    } else {
+      showMyListButton.classList.remove("shown")
+      if (
+        searchInputTexts.every(inputText => txtValue.toUpperCase().includes(inputText.toUpperCase()))
+        &&
+        searchButtonTexts.every(text => txtValue.includes(text))
+        &&
+        (
+          category3ButtonText == "category-3"
+          ||
+          txtValue.toUpperCase().includes(`「${category3ButtonText}`)
+          ||
+          maruNumbers.some(maruNumber => txtValue.includes(`${category3ButtonText}${maruNumber}`))
+        )
+      ) {
+        shouldDisplay = true;
+      }
     }
 
     li[i].style.display = shouldDisplay ? '' : 'none';
@@ -147,17 +190,51 @@ document.querySelector('#searchInput').addEventListener('keyup', () => {
   filterLinks()
 });
 
-document.querySelector('#clear-button').addEventListener('click', ()=>{
+document.querySelector('#clear-button').addEventListener('click', () => {
   document.querySelector('#searchInput').value = "";
   document.querySelector('#clear-button').classList.add('none')
   filterLinks()
 })
 
-document.querySelector('#title').addEventListener('click', ()=>{
+document.querySelector('#title').addEventListener('click', () => {
   document.querySelectorAll('.dropdown .btn').forEach(btn => {
     btn.innerText = `${btn.id} `;
   });
   document.querySelector('#searchInput').value = "";
   document.querySelector('#clear-button').classList.add('none')
   filterLinks()
+})
+
+let savedList = localStorage.getItem('watchLaterList');
+if (!savedList) {
+  savedList = { URL_list: [] };
+} else {
+  savedList = JSON.parse(savedList);
+}
+
+//リスト追加ボタンの処理
+function addToList(btn) {
+  const parentLi = btn.closest('li');
+  const linkURL = parentLi.querySelector('a').getAttribute("href");
+  const isAdded = savedList.URL_list.includes(linkURL);
+
+  if (!isAdded) {
+    savedList.URL_list.push(linkURL);
+    localStorage.setItem('watchLaterList', JSON.stringify(savedList));
+
+  } else {
+    savedList.URL_list = savedList.URL_list.filter(url => url !== linkURL);
+    localStorage.setItem('watchLaterList', JSON.stringify(savedList));
+  }
+  btn.classList.toggle("isAdded", !isAdded)
+  btn.querySelector(".addIcon").classList.toggle("none", !isAdded)
+  btn.querySelector(".doneIcon").classList.toggle("none", isAdded)
+
+}
+
+// リスト表示ボタンがクリックされたときの処理
+const showMyListButton = document.querySelector('#listButton');
+showMyListButton.addEventListener('click', function () {
+  showMyList = showMyListButton.classList.toggle("shown")
+  filterLinks(showMyList)
 })

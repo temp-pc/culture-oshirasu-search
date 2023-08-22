@@ -5,19 +5,48 @@
 }
 #title{
   cursor: pointer;
-  margin-bottom: 30px;
+  padding: 10px;
+  margin: 10px;
 }
 h4{
-  font-size: 20px;
+  font-size: 18px;
 }
 p{
   color: black;
+  margin-left: 16px;
 }
 a:visited {
   color: purple;
 }
 a.dropdown-item{
-  color: blue;
+  color: blue;;
+}
+
+hr{
+  margin-top: 5px;
+}
+
+button.addButton{
+  border-color: gainsboro;
+}
+button.isAdded{
+  background-color: #ADE0EE;
+  color:black
+}
+img{
+  background-color: transparent;
+}
+img.doneIcon{
+  margin-left: 10px;
+}
+img.addIcon{
+  margin-left: 10px;
+}
+#listButton{
+  border-color: gainsboro;
+}
+#listButton.shown{
+  background-color: #ADE0EE;
 }
 
 .none{
