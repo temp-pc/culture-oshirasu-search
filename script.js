@@ -215,7 +215,8 @@ document.querySelector('#title').addEventListener('click', () => {
   });
   document.querySelector('#searchInput').value = "";
   document.querySelector('#clear-button').classList.add('none')
-  filterLinks()
+  filterLinks();
+  window.scrollTo(0, 0);
 })
 
 
