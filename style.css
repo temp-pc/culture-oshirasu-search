@@ -3,53 +3,98 @@
   text-align: justify;
   background-color: #F9F9F9;
 }
-#title{
+
+#title {
   cursor: pointer;
   padding: 10px;
   margin: 10px;
 }
-h4{
+
+#listButton {
+  background-color: #FFFFFB;
+}
+
+#listButton.shown {
+  background-color: #FFCCDA;
+}
+
+#addedToListCounter {
+  font-weight: bold;
+  color: white;
+  background-color: #D75F55;
+  border-radius: 30%;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  margin-top: -24px;
+  margin-left: -10px;
+  margin-right: 8px;
+}
+
+
+h4 {
   font-size: 18px;
+  margin-bottom: 4px;
 }
-p{
-  color: black;
-  margin-left: 16px;
+
+ul#linkList {
+  padding-left: 20px;
+  margin-right: 10px;
 }
+
 a:visited {
   color: purple;
 }
-a.dropdown-item{
-  color: blue;;
+
+a.dropdown-item {
+  color: blue;
+  ;
 }
 
-hr{
+p {
+  margin-left: 16px;
+  margin-bottom: 4px;
+}
+
+hr {
   margin-top: 5px;
 }
 
-button.addButton{
+button.addButton {
+  justify-content: right;
+  align-items: right;
   border-color: gainsboro;
+  font-size: 14px;
+  padding: 4px;
 }
-button.isAdded{
+
+button.isAdded {
   background-color: #ADE0EE;
-  color:black
 }
-img{
+
+img {
   background-color: transparent;
 }
-img.doneIcon{
-  margin-left: 10px;
-}
-img.addIcon{
-  margin-left: 10px;
-}
-#listButton{
-  border-color: gainsboro;
-}
-#listButton.shown{
-  background-color: #ADE0EE;
+
+img.doneIcon {
+  margin-left: 5px;
+  width: 20px;
+  height: 20px;
 }
 
-.none{
+img.addIcon {
+  margin-left: 5px;
+  width: 20px;
+  height: 20px;
+}
+
+
+.dropdown-menu {
+  transform: none !important;
+  top: auto !important;
+}
+
+.none {
   display: none;
 }
-

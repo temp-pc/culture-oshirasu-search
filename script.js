@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const buttonElement = document.createElement("button")
         buttonElement.textContent = "add to list"
-        buttonElement.classList.add("addButton", "btn")
+        buttonElement.classList.add("addButton", "btn", "ml-auto")
         buttonElement.setAttribute('onclick', `addToList(this)`);
 
         const addIcon = document.createElement("img")
@@ -58,7 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
         linkList.appendChild(li);
       });
 
-      updateArticlesNumber()
+      updateArticlesNumber();
+      addedToListCounter();
     })
     .catch(error => console.error("Error fetching JSON:", error));
 });
@@ -185,10 +186,22 @@ function filterLinks(showMyList) {
   updateArticlesNumber()
 }
 
-document.querySelector('#searchInput').addEventListener('keyup', () => {
+
+// inputでフリーワード検索
+document.querySelector('#searchInput').addEventListener('input', () => {
   document.querySelector('#clear-button').classList.remove('none')
   filterLinks()
 });
+// スマホ用に追加
+document.querySelector('#searchInput').addEventListener('keypress', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault(); 
+    document.querySelector('#clear-button').classList.remove('none');
+    filterLinks();
+  }
+});
+
+
 
 document.querySelector('#clear-button').addEventListener('click', () => {
   document.querySelector('#searchInput').value = "";
@@ -205,14 +218,14 @@ document.querySelector('#title').addEventListener('click', () => {
   filterLinks()
 })
 
+
 let savedList = localStorage.getItem('watchLaterList');
 if (!savedList) {
   savedList = { URL_list: [] };
 } else {
   savedList = JSON.parse(savedList);
 }
-
-//リスト追加ボタンの処理
+//addButton（mylistへ追加）の処理
 function addToList(btn) {
   const parentLi = btn.closest('li');
   const linkURL = parentLi.querySelector('a').getAttribute("href");
@@ -229,7 +242,14 @@ function addToList(btn) {
   btn.classList.toggle("isAdded", !isAdded)
   btn.querySelector(".addIcon").classList.toggle("none", !isAdded)
   btn.querySelector(".doneIcon").classList.toggle("none", isAdded)
+  addedToListCounter()
+}
 
+const listCounterElement = document.querySelector("#addedToListCounter")
+function addedToListCounter(){
+  let count = savedList.URL_list.length;
+  listCounterElement.innerText = count;
+  listCounterElement.classList.toggle("none", count == 0 )
 }
 
 // リスト表示ボタンがクリックされたときの処理
