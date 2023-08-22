@@ -27,9 +27,10 @@ document.addEventListener("DOMContentLoaded", function () {
         p.textContent = `${item.timestamp}  ${item.timerange}`;
 
         const buttonElement = document.createElement("button")
-        buttonElement.textContent = "add to list"
         buttonElement.classList.add("addButton", "btn", "ml-auto")
         buttonElement.setAttribute('onclick', `addToList(this)`);
+
+        const buttonSpanElement = document.createElement("span");
 
         const addIcon = document.createElement("img")
         addIcon.setAttribute("src", "images/add_black_24dp.svg")
@@ -43,6 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
         addIcon.classList.toggle("none", isAdded)
         doneIcon.classList.toggle("none", !isAdded)
 
+        buttonSpanElement.innerText = isAdded ? "added" : "add to list"
+        buttonElement.appendChild(buttonSpanElement)
         buttonElement.appendChild(addIcon)
         buttonElement.appendChild(doneIcon)
 
@@ -125,7 +128,7 @@ function updateArticlesNumber() {
 
 // カテゴリーボタンに、今絞り込んでいるカテゴリー名を表示
 function filterButton(selectedCategory, buttonId) {
-  document.querySelector('#' + buttonId).innerText = selectedCategory;
+  document.querySelector('#' + buttonId).textContent = selectedCategory;
   filterLinks()
 }
 
@@ -144,10 +147,10 @@ function filterLinks(showMyList) {
   const searchInputTexts = searchInputValue.split(/[ 　]+/);
   const searchButtons = document.querySelectorAll('.searchButton:not(#category-3)');
   const searchButtonTexts = Array.from(searchButtons)
-    .map(button => button.innerText)
+    .map(button => button.textContent)
     .filter(text => !text.toLowerCase().includes("category"));
 
-  const category3ButtonText = document.querySelector('#category-3').innerText.trim();
+  const category3ButtonText = document.querySelector('#category-3').textContent.trim();
   const maruNumbers = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪", "⑫", "⑬", "⑭", "⑮", "⑯", "⑰", "⑱", "⑲", "⑳", "㉑", "㉒", "㉓", "㉔", "㉕", "㉖", "㉗", "㉘", "㉙", "㉚", "㉛", "㉜", "㉝", "㉞", "㉟", "㊱", "㊲", "㊳", "㊴", "㊵", "㊶", "㊷", "㊸", "㊹"]
 
   for (let i = 0; i < li.length; i++) {
@@ -211,7 +214,7 @@ document.querySelector('#clear-button').addEventListener('click', () => {
 
 document.querySelector('#title').addEventListener('click', () => {
   document.querySelectorAll('.dropdown .btn').forEach(btn => {
-    btn.innerText = `${btn.id} `;
+    btn.textContent = `${btn.id} `;
   });
   document.querySelector('#searchInput').value = "";
   document.querySelector('#clear-button').classList.add('none')
@@ -230,16 +233,17 @@ if (!savedList) {
 function addToList(btn) {
   const parentLi = btn.closest('li');
   const linkURL = parentLi.querySelector('a').getAttribute("href");
+  const buttonTextElement = btn.querySelector('span');
   const isAdded = savedList.URL_list.includes(linkURL);
 
   if (!isAdded) {
     savedList.URL_list.push(linkURL);
     localStorage.setItem('watchLaterList', JSON.stringify(savedList));
-
   } else {
     savedList.URL_list = savedList.URL_list.filter(url => url !== linkURL);
     localStorage.setItem('watchLaterList', JSON.stringify(savedList));
   }
+  buttonTextElement.innerText = !isAdded ? "added" : "add to list";
   btn.classList.toggle("isAdded", !isAdded)
   btn.querySelector(".addIcon").classList.toggle("none", !isAdded)
   btn.querySelector(".doneIcon").classList.toggle("none", isAdded)
@@ -249,7 +253,7 @@ function addToList(btn) {
 const listCounterElement = document.querySelector("#addedToListCounter")
 function addedToListCounter(){
   let count = savedList.URL_list.length;
-  listCounterElement.innerText = count;
+  listCounterElement.textContent = count;
   listCounterElement.classList.toggle("none", count == 0 )
 }
 
