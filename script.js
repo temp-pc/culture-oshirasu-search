@@ -145,7 +145,7 @@ document.querySelectorAll('.dropdown .btn').forEach(btn => {
 })
 
 // カテゴリーボタンと検索ワードを元にリンクを絞り込み
-function filterLinks(showMyList) {
+function filterLinks(displayMyList) {
   const li = document.querySelectorAll('#linkList li');
   const searchInputValue = document.querySelector('#searchInput').value.toUpperCase();
   const searchInputTexts = searchInputValue.split(/[ 　]+/);
@@ -163,14 +163,14 @@ function filterLinks(showMyList) {
     const linkURL = li[i].querySelector('a').getAttribute('href');
     let shouldDisplay = false;
 
-    if (showMyList) {
+    if (displayMyList) {
       if (savedList.URL_list.includes(linkURL)) {
         shouldDisplay = true;
       }
-    } else if (showMyList === false) {
-      shouldDisplay = true;  //showMyListの解除の場合は全てを表示
+    } else if (displayMyList === false) {
+      shouldDisplay = true;  //displayMyListの解除の場合は全てを表示
     } else {
-      showMyListButton.classList.remove("shown")
+      displayMyListButton.classList.remove("shown")
       if (
         searchInputTexts.every(inputText => txtValue.toUpperCase().includes(inputText.toUpperCase()))
         &&
@@ -216,13 +216,17 @@ document.querySelector('#clear-button').addEventListener('click', () => {
   filterLinks()
 })
 
-document.querySelector('#title').addEventListener('click', () => {
+function clearFilterElements(){
   document.querySelectorAll('.dropdown .btn').forEach(btn => {
     btn.textContent = `${btn.id} `;
     btn.classList.remove("choosed");
   });
   document.querySelector('#searchInput').value = "";
   document.querySelector('#clear-button').classList.add('none')
+}
+
+document.querySelector('#title').addEventListener('click', () => {
+  clearFilterElements();
   filterLinks();
   window.scrollTo(0, 0);
 })
@@ -263,8 +267,9 @@ function addedToListCounter(){
 }
 
 // My List表示ボタンがクリックされたときの処理
-const showMyListButton = document.querySelector('#listButton');
-showMyListButton.addEventListener('click', function () {
-  showMyList = showMyListButton.classList.toggle("shown")
-  filterLinks(showMyList)
+const displayMyListButton = document.querySelector('#listButton');
+displayMyListButton.addEventListener('click', function () {
+  displayMyList = displayMyListButton.classList.toggle("shown")
+  filterLinks(displayMyList);
+  clearFilterElements();
 })

@@ -4,11 +4,25 @@
   background-color: #F9F9F9;
 }
 
+#title {
+  width: fit-content;
+  color: white;
+  font-weight: bold;
+  background-color: transparent;
+  margin: auto;
+  margin-left: 5%;
+  margin-right: 10px;
+  padding: 8px;
+  text-align: left;
+  text-shadow: 0.5px 0.5px 0 #6c757d, -0.3px -0.3px 0 #6c757d
+}
+
 #listButton {
   background-color: #FFFFFB;
 }
+
 #listButton.shown {
-  background-color: #FFCCDA;
+  background-color: #ffdde6;
 }
 
 #addedToListCounter {
@@ -25,9 +39,10 @@
   margin-right: 8px;
 }
 
-span{
+span {
   background-color: transparent;
 }
+
 h4 {
   font-size: 18px;
   margin-bottom: 4px;
@@ -44,18 +59,28 @@ a:visited {
 }
 
 
-button.searchButton, button.searchButton:focus, button.searchButton:hover{
-  color: #212529;
+button.searchButton,
+button.searchButton:focus,
+button.searchButton:hover {
+  color: #6c757d;
   background-color: white;
   border-color: gainsboro;
 }
-.btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle{
-  color:#212529;
-  background-color: #ADE0EE;
+
+.btn-secondary:not(:disabled):not(.disabled).active,
+.btn-secondary:not(:disabled):not(.disabled):active,
+.show>.btn-secondary.dropdown-toggle {
+  color: #6c757d;
+  background-color: #E6F9FF;
   border: 1px solid gainsboro;
 }
-button.searchButton.choosed{
+
+button.searchButton.choosed {
   background-color: #ADE0EE;
+}
+
+.dropdown-menu {
+  background-color: #F9F9F9;
 }
 
 a.dropdown-item {
@@ -72,6 +97,7 @@ hr {
 }
 
 button.addButton {
+  color: #4D5359;
   justify-content: right;
   align-items: right;
   background-color: white;
@@ -79,6 +105,7 @@ button.addButton {
   font-size: 14px;
   padding: 4px;
 }
+
 button.isAdded {
   background-color: #ADE0EE;
 }
