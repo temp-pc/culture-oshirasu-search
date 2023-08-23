@@ -100,6 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
           event.preventDefault(); // リンクのデフォルト動作を無効化
           const selectedCategory = link.textContent.trim(); // 選択されたカテゴリ
           const buttonId = link.closest(".dropdown").querySelector(".dropdown-toggle").id; // ボタンのID
+          document.getElementById(buttonId).classList.add("choosed");
           filterButton(selectedCategory, buttonId);
         })
       })
@@ -126,15 +127,18 @@ function updateArticlesNumber() {
   articleCounter.innerText = `${articlesNumber}件`
 }
 
+
+
 // カテゴリーボタンに、今絞り込んでいるカテゴリー名を表示
 function filterButton(selectedCategory, buttonId) {
   document.querySelector('#' + buttonId).textContent = selectedCategory;
   filterLinks()
 }
 
-// ボタンを押すと、絞り込みを解除。絞り込みをしているカテゴリー名を削除して、ボタンのid名に戻す
+// カテゴリーボタンを押すと、絞り込みを解除。絞り込みをしているカテゴリー名を削除して、ボタンのid名に戻す
 document.querySelectorAll('.dropdown .btn').forEach(btn => {
   btn.addEventListener('click', () => {
+    btn.classList.remove("choosed")
     const btnId = btn.id;
     filterButton(`${btnId} `, btnId)
   });
@@ -215,6 +219,7 @@ document.querySelector('#clear-button').addEventListener('click', () => {
 document.querySelector('#title').addEventListener('click', () => {
   document.querySelectorAll('.dropdown .btn').forEach(btn => {
     btn.textContent = `${btn.id} `;
+    btn.classList.remove("choosed");
   });
   document.querySelector('#searchInput').value = "";
   document.querySelector('#clear-button').classList.add('none')
@@ -257,7 +262,7 @@ function addedToListCounter(){
   listCounterElement.classList.toggle("none", count == 0 )
 }
 
-// リスト表示ボタンがクリックされたときの処理
+// My List表示ボタンがクリックされたときの処理
 const showMyListButton = document.querySelector('#listButton');
 showMyListButton.addEventListener('click', function () {
   showMyList = showMyListButton.classList.toggle("shown")

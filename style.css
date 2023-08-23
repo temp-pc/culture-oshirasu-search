@@ -7,7 +7,6 @@
 #listButton {
   background-color: #FFFFFB;
 }
-
 #listButton.shown {
   background-color: #FFCCDA;
 }
@@ -29,7 +28,6 @@
 span{
   background-color: transparent;
 }
-
 h4 {
   font-size: 18px;
   margin-bottom: 4px;
@@ -40,13 +38,28 @@ ul#linkList {
   margin-right: 10px;
 }
 
+
 a:visited {
   color: purple;
 }
 
+
+button.searchButton, button.searchButton:focus, button.searchButton:hover{
+  color: #212529;
+  background-color: white;
+  border-color: gainsboro;
+}
+.btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle{
+  color:#212529;
+  background-color: #ADE0EE;
+  border: 1px solid gainsboro;
+}
+button.searchButton.choosed{
+  background-color: #ADE0EE;
+}
+
 a.dropdown-item {
-  color: blue;
-  ;
+  color: #007bff;
 }
 
 p {
@@ -61,11 +74,11 @@ hr {
 button.addButton {
   justify-content: right;
   align-items: right;
+  background-color: white;
   border-color: gainsboro;
   font-size: 14px;
   padding: 4px;
 }
-
 button.isAdded {
   background-color: #ADE0EE;
 }
@@ -85,7 +98,6 @@ img.addIcon {
   width: 20px;
   height: 20px;
 }
-
 
 .dropdown-menu {
   transform: none !important;
