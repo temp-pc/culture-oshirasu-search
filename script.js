@@ -232,6 +232,7 @@ function clearFilterElements(){
 
 document.querySelector('#title').addEventListener('click', () => {
   clearFilterElements();
+  displayMyListButtonPressed = displayMyListButton.classList.remove("shown")
   filterLinks();
   window.scrollTo(0, 0);
 })
