@@ -145,9 +145,9 @@ document.querySelectorAll('.dropdown .btn').forEach(btn => {
 })
 
 // カテゴリーボタンと検索ワードを元にリンクを絞り込み
-function filterLinks(displayMyList) {
+function filterLinks(displayMyListButtonPressed) {
   const li = document.querySelectorAll('#linkList li');
-  const searchInputValue = document.querySelector('#searchInput').value.toUpperCase();
+  const searchInputValue = textSearchInput.value.toUpperCase();
   const searchInputTexts = searchInputValue.split(/[ 　]+/);
   const searchButtons = document.querySelectorAll('.searchButton:not(#category-3)');
   const searchButtonTexts = Array.from(searchButtons)
@@ -163,14 +163,13 @@ function filterLinks(displayMyList) {
     const linkURL = li[i].querySelector('a').getAttribute('href');
     let shouldDisplay = false;
 
-    if (displayMyList) {
+    if (displayMyListButtonPressed) {
       if (savedList.URL_list.includes(linkURL)) {
         shouldDisplay = true;
       }
-    } else if (displayMyList === false) {
+    } else if (displayMyListButtonPressed === false) {
       shouldDisplay = true;  //displayMyListの解除の場合は全てを表示
     } else {
-      displayMyListButton.classList.remove("shown")
       if (
         searchInputTexts.every(inputText => txtValue.toUpperCase().includes(inputText.toUpperCase()))
         &&
@@ -183,6 +182,12 @@ function filterLinks(displayMyList) {
           ||
           maruNumbers.some(maruNumber => txtValue.includes(`${category3ButtonText}${maruNumber}`))
         )
+        &&
+        (
+          !displayMyListButton.classList.contains("shown")
+          ||
+          savedList.URL_list.includes(linkURL)
+        )
       ) {
         shouldDisplay = true;
       }
@@ -193,26 +198,26 @@ function filterLinks(displayMyList) {
   updateArticlesNumber()
 }
 
-
+const textSearchInput = document.querySelector('#searchInput');
+const textClearButton = document.querySelector('#text-clear-button');
 // inputでフリーワード検索
-document.querySelector('#searchInput').addEventListener('input', () => {
-  document.querySelector('#clear-button').classList.remove('none')
+textSearchInput.addEventListener('input', () => {
+  textClearButton.classList.remove('none')
   filterLinks()
 });
 // スマホ用に追加
-document.querySelector('#searchInput').addEventListener('keypress', (event) => {
+textSearchInput.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
     event.preventDefault(); 
-    document.querySelector('#clear-button').classList.remove('none');
+    textClearButton.classList.remove('none');
     filterLinks();
   }
 });
 
 
-
-document.querySelector('#clear-button').addEventListener('click', () => {
-  document.querySelector('#searchInput').value = "";
-  document.querySelector('#clear-button').classList.add('none')
+textClearButton.addEventListener('click', () => {
+  textSearchInput.value = "";
+  textClearButton.classList.add('none')
   filterLinks()
 })
 
@@ -221,8 +226,8 @@ function clearFilterElements(){
     btn.textContent = `${btn.id} `;
     btn.classList.remove("choosed");
   });
-  document.querySelector('#searchInput').value = "";
-  document.querySelector('#clear-button').classList.add('none')
+  textSearchInput.value = "";
+  textClearButton.classList.add('none')
 }
 
 document.querySelector('#title').addEventListener('click', () => {
@@ -269,7 +274,7 @@ function addedToListCounter(){
 // My List表示ボタンがクリックされたときの処理
 const displayMyListButton = document.querySelector('#listButton');
 displayMyListButton.addEventListener('click', function () {
-  displayMyList = displayMyListButton.classList.toggle("shown")
-  filterLinks(displayMyList);
+  displayMyListButtonPressed = displayMyListButton.classList.toggle("shown")
+  filterLinks(displayMyListButtonPressed);
   clearFilterElements();
 })
