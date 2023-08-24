@@ -93,7 +93,7 @@ p {
   margin-bottom: 4px;
 }
 
-hr {
+hr.article {
   margin-top: 5px;
 }
 
@@ -130,6 +130,11 @@ img.addIcon {
 .dropdown-menu {
   transform: none !important;
   top: auto !important;
+}
+
+button.setting-button:hover,button.setting-button:focus{
+  border: none;
+  border-spacing: none;
 }
 
 .none {

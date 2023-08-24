@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       data.data.forEach(item => {
         const li = document.createElement("li");
+        li.classList.add("article")
         const a = document.createElement("a");
         item.link.includes(baseURL) ? a.href = item.link : a.href = baseURL + item.link;
         a.target = '_blank';
@@ -56,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
         li.appendChild(divElement);
 
         hr = document.createElement("hr")
+        hr.classList.add("article")
         li.appendChild(hr)
 
         linkList.appendChild(li);
@@ -208,7 +210,7 @@ textSearchInput.addEventListener('input', () => {
 // スマホ用に追加
 textSearchInput.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
-    event.preventDefault(); 
+    event.preventDefault();
     textClearButton.classList.remove('none');
     filterLinks();
   }
@@ -221,7 +223,7 @@ textClearButton.addEventListener('click', () => {
   filterLinks()
 })
 
-function clearFilterElements(){
+function clearFilterElements() {
   document.querySelectorAll('.dropdown .btn').forEach(btn => {
     btn.textContent = `${btn.id} `;
     btn.classList.remove("choosed");
@@ -266,16 +268,128 @@ function addToList(btn) {
 }
 
 const listCounterElement = document.querySelector("#addedToListCounter")
-function addedToListCounter(){
+function addedToListCounter() {
   let count = savedList.URL_list.length;
   listCounterElement.textContent = count;
-  listCounterElement.classList.toggle("none", count == 0 )
+  listCounterElement.classList.toggle("none", count == 0)
+  console.log("counted")
 }
 
 // My List表示ボタンがクリックされたときの処理
 const displayMyListButton = document.querySelector('#listButton');
-displayMyListButton.addEventListener('click', function () {
-  displayMyListButtonPressed = displayMyListButton.classList.toggle("shown")
+function displayMyList(forceShown) {
+  if(forceShown){
+    displayMyListButtonPressed = displayMyListButton.classList.add("shown");
+  }else{
+    displayMyListButtonPressed = displayMyListButton.classList.toggle("shown");
+  }
   filterLinks(displayMyListButtonPressed);
   clearFilterElements();
+}
+displayMyListButton.addEventListener('click', () => {
+  displayMyList();
 })
+
+
+
+const settingButton = document.querySelector("#setting-button");
+const settingContent = document.querySelector("#settingContent");
+const myListDownloadButton = document.querySelector("#myListDownload");
+const myListUploadButton = document.querySelector("#myListUpload");
+const myListFileInput = document.querySelector('#myListFileInput');
+const inputedFileNameElement = document.querySelector("#fileName");
+const addNewListButton = document.querySelector("#addNewList");
+const overwriteWithNewListButton = document.querySelector("#overwriteWithNewList");
+
+
+function settingContentUpdate() {
+  isFileInputed = myListFileInput.files.length > 0;
+  if (isFileInputed) {
+    filename = myListFileInput.files[0].name;
+    inputedFileNameElement.innerText = filename;
+  }
+  inputedFileNameElement.classList.toggle("none", !isFileInputed);
+  document.querySelector("#uploadNavigation").classList.toggle("none", !isFileInputed);
+}
+
+settingButton.addEventListener('click', () => {
+  settingContentUpdate();
+})
+
+
+// MyListダウンロードボタンの処理
+myListDownloadButton.addEventListener('click', () => {
+  list = JSON.stringify(savedList)
+  if (savedList.URL_list.length) {
+    const blob = new Blob([list], { type: "text/plain" });
+    const blobUrl = URL.createObjectURL(blob);
+
+    // ダウンロード用リンクを作成
+    const downloadLink = document.createElement("a");
+    downloadLink.href = blobUrl;
+    downloadLink.download = "MyListData.txt";
+    downloadLink.innerText = "Download Data";
+    downloadLink.click();
+    // 不要になったBlob URLを解放
+    URL.revokeObjectURL(blobUrl)
+  }
+  else {
+    alert("My List が空です。")
+  }
+})
+
+// MyListアップロードボタンの処理
+myListUploadButton.addEventListener('click', function () {
+  myListFileInput.click();
+})
+
+myListFileInput.addEventListener("change", () => {
+  settingContentUpdate();
+})
+addNewListButton.addEventListener("click", () => {
+  updateMyList(addNewListButton.innerText);
+});
+overwriteWithNewListButton.addEventListener("click", () => {
+  updateMyList(overwriteWithNewListButton.innerText);
+});
+
+function updateMyList(buttonName) {
+  const file = myListFileInput.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function (event) {
+    const uploadedData = event.target.result;
+    let newData = JSON.parse(uploadedData);
+    let newDataURLList;
+    try {
+      newDataURLList = newData.URL_list;
+      console.log(newDataURLList.length);
+    } catch (error) {
+      alert('アップロードされたデータの形式が正しくありません。');
+      return;
+    }
+
+    if (buttonName === '追加') {
+      newDataURLList = savedList.URL_list.concat(newDataURLList);
+    } else if (buttonName === '書き替え') {
+    } else {
+      alert('無効な操作です。');
+    }
+    const uniqueURLs = [...new Set(newDataURLList)];
+    savedList.URL_list = uniqueURLs
+    localStorage.setItem('watchLaterList', JSON.stringify(savedList));
+    document.querySelectorAll("li.article").forEach(liElement => {
+      liURL = liElement.querySelector('a').getAttribute("href");
+      buttonElement = liElement.querySelector('.addButton')
+      buttonText = buttonElement.querySelector('span')
+      const isInclueded = savedList.URL_list.includes(liURL);
+      buttonText.innerText = isInclueded ? "added" : "add to list";
+      buttonElement.classList.toggle("isAdded", isInclueded)
+      buttonElement.querySelector(".addIcon").classList.toggle("none", isInclueded)
+      buttonElement.querySelector(".doneIcon").classList.toggle("none", !isInclueded)
+    });
+    addedToListCounter();
+    displayMyList(true);
+  };
+  reader.readAsText(file);
+}
