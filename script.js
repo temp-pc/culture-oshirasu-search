@@ -344,7 +344,14 @@ myListUploadButton.addEventListener('click', function () {
 })
 
 myListFileInput.addEventListener("change", () => {
-  settingContentUpdate();
+  const filename = myListFileInput.files[0].name;
+  const fileExtension = filename.split('.').pop(); 
+  if( fileExtension == "txt" || fileExtension == "json" ){
+    settingContentUpdate();
+  }else{
+    myListFileInput.value = '';
+    alert('正しいデータをアップロードしてください。');
+  }
 })
 addNewListButton.addEventListener("click", () => {
   updateMyList(addNewListButton.innerText);
@@ -359,11 +366,11 @@ function updateMyList(buttonName) {
 
   reader.onload = function (event) {
     const uploadedData = event.target.result;
-    let newData = JSON.parse(uploadedData);
+    let newData;
     let newDataURLList;
     try {
+      newData = JSON.parse(uploadedData);
       newDataURLList = newData.URL_list;
-      console.log(newDataURLList.length);
     } catch (error) {
       alert('アップロードされたデータの形式が正しくありません。');
       return;
