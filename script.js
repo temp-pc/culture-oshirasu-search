@@ -327,7 +327,7 @@ myListDownloadButton.addEventListener('click', () => {
     // ダウンロード用リンクを作成
     const downloadLink = document.createElement("a");
     downloadLink.href = blobUrl;
-    downloadLink.download = "MyListDatajson";
+    downloadLink.download = "MyListData.json";
     downloadLink.innerText = "Download Data";
     downloadLink.click();
     // 不要になったBlob URLを解放
