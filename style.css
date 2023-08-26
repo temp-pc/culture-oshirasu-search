@@ -5,6 +5,7 @@
 }
 
 #title {
+  font-size: 14px;
   width: fit-content;
   color: white;
   font-weight: bold;
@@ -36,28 +37,7 @@
   text-align: center;
   margin-top: -24px;
   margin-left: -10px;
-  margin-right: 8px;
 }
-
-span {
-  background-color: transparent;
-}
-
-h4 {
-  font-size: 18px;
-  margin-bottom: 4px;
-}
-
-ul#linkList {
-  padding-left: 20px;
-  margin-right: 10px;
-}
-
-
-a:visited {
-  color: purple;
-}
-
 
 button.searchButton,
 button.searchButton:focus,
@@ -84,13 +64,33 @@ button.searchButton.choosed {
   background-color: #F9F9F9;
 }
 
+span {
+  background-color: transparent;
+}
+
+h4 {
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+
+ul#linkList {
+  padding-left: 20px;
+  margin-right: 10px;
+}
+
+
+a:visited {
+  color: purple;
+}
+
 a.dropdown-item {
   color: #007bff;
 }
 
 p {
+  font-size: 14px;
   margin-left: 16px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 hr.article {

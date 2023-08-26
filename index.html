@@ -18,21 +18,71 @@
   <div class="container-fluid mt-5" style="padding: 1% 5%; align-items: center;">
 
     <div id="header-menu" class="d-flex justify-content-between fixed-top"
-      style="background-color: #ADE0EE; padding: 5px;">
+      style="background-color: #ADE0EE; padding: 1%;">
       <h6 id="title" class="text-wrap">
         Culture Oshirasu Search
       </h6>
       <div class="d-flex align-items-center mt-auto"
-        style="background-color: transparent; margin-bottom: 2px;  min-width: 160px; ">
+        style="background-color: transparent; margin-bottom: 2px; margin-right: 2%; min-width: 160px; ">
         <button id="listButton" class="btn"
-          style="height: 45px; color: #4D5359; border: 0.5px solid gainsboro; padding-bottom: 4px; ">
-          <img src="images/video_library_black_24dp.svg" alt="list" style="width: 30px; height: 30px;">
+          style="font-size: 14px; height: 40px; color: #4D5359; border: 0.5px solid gainsboro; padding-bottom: 4px; ">
+          <img src="images/video_library_black_24dp.svg" alt="list" style="width: 25px; height: 25px;">
           My List
         </button>
         <div id="addedToListCounter"></div>
+        <div id="settings" class="d-flex" style="background-color: transparent;">
+          <div id="setting-button" type="button" data-toggle="modal" data-target="#myModal"
+            style="border: none; background-color: transparent;">
+            <img src="images/settings_black_24dp.svg" alt="" style="width: 28px; height: 28px;">
+          </div>
+        </div>
       </div>
 
+      
+      
     </div>
+
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    style="background-color: transparent;border: 1px solid gainsboro; ">
+    <div class="modal-dialog " role="document"
+      style="min-width: 250px; border-radius: 5%; background-color: transparent;">
+      <div class="modal-content" style=" border-radius: 6%;">
+        <div class="modal-body align-items-center" style="background-color: #ADE0EE; border-radius: 5%; ">
+          <button id="myListDownload" class="btn-light d-flex align-items-center mx-auto"
+            style="margin: 5px; border: 1px solid gainsboro; background-color: white; border-radius: 0.25rem;">
+            <img style="width: 30px; margin-right: 5px;" src="images/file_download_black_24dp.svg" alt="">
+            <div style="color: #4D5359; background-color: transparent;">My List を<br>ダウンロード</div>
+          </button>
+          <br>
+          <div style="background-color: transparent;">
+            <button id="myListUpload" class="btn-light d-flex align-items-center mx-auto"
+              style="margin: 5px; border: 1px solid gainsboro; background-color: white; border-radius: 0.25rem;">
+              <img style="width: 30px; margin-right: 5px;" src="images/file_upload_black_24dp.svg" alt="">
+              <input type="file" id="myListFileInput" class="none">
+              <div style="color: #4D5359; background-color: transparent;">My List を<br>アップロード</div>
+            </button>
+            <div id="fileName" class="none"
+              style="margin-left: 5px; background-color: transparent; text-align: center;"></div>
+          </div>
+          <div id="uploadNavigation" class="none" style="background-color: transparent;">
+            <div class="d-flex align-items-center flex-wrap" style="background-color: transparent;">
+              <button id="addNewList" type="button" class="btn btn-primary flex-grow-1" data-dismiss="modal"
+                style="margin: 5px;">
+                追加
+              </button>
+              <button id="overwriteWithNewList" type="button" class="btn btn-primary flex-grow-1"
+                data-dismiss="modal" style="margin: 5px;">
+                書き替え
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
     <div style="margin-top: 60px;">
       <div class="d-flex align-items-center flex-wrap">
@@ -80,53 +130,6 @@
 
 
     <ul id="linkList"></ul>
-
-
-    <div id="settings" class="fixed-bottom" style="width: 40px; margin: 1%; background-color: transparent;">
-      <div id="setting-button" type="button" data-toggle="modal" data-target="#myModal"
-        style="border: none; background-color: transparent;">
-        <img src="images/settings_black_24dp.svg" alt="" style="width: 40px; height: 40px;">
-      </div>
-    </div>
-
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-      style="background-color: transparent;border: 1px solid gainsboro; ">
-      <div class="modal-dialog " role="document" style="position: fixed; bottom: 5%; left: 10%; min-width: 250px; border-radius: 5%; background-color: transparent;">
-        <div class="modal-content" style=" border-radius: 6%;">
-          <div class="modal-body align-items-center" style="background-color: #ADE0EE; border-radius: 5%; ">
-            <button id="myListDownload" class="btn-light d-flex align-items-center mx-auto"
-              style="margin: 5px; border: 1px solid gainsboro; background-color: white; border-radius: 0.25rem;">
-              <img style="width: 30px; margin-right: 5px;" src="images/file_download_black_24dp.svg" alt="">
-              <div style="color: #4D5359; background-color: transparent;">My List を<br>ダウンロード</div>
-            </button>
-            <br>
-            <div style="background-color: transparent;">
-              <button id="myListUpload" class="btn-light d-flex align-items-center mx-auto"
-                style="margin: 5px; border: 1px solid gainsboro; background-color: white; border-radius: 0.25rem;">
-                <img style="width: 30px; margin-right: 5px;" src="images/file_upload_black_24dp.svg" alt="">
-                <input type="file" id="myListFileInput" class="none">
-                <div style="color: #4D5359; background-color: transparent;">My List を<br>アップロード</div>
-              </button>
-              <div id="fileName" class="none"
-                style="margin-left: 5px; background-color: transparent; text-align: center;"></div>
-            </div>
-            <div id="uploadNavigation" class="none" style="background-color: transparent;">
-              <div class="d-flex align-items-center flex-wrap" style="background-color: transparent;">
-                <button id="addNewList" type="button" class="btn btn-primary flex-grow-1" data-dismiss="modal"
-                  style="margin: 5px;">
-                  追加
-                </button>
-                <button id="overwriteWithNewList" type="button" class="btn btn-primary flex-grow-1" data-dismiss="modal"
-                  style="margin: 5px;">
-                  書き替え
-                </button>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
 
 
   </div>
