@@ -1,12 +1,13 @@
 const baseURL = "https://shirasu.io"
 
-
-// data.jsonをもとにリンクのリストを表示
+let allLinkList;
 document.addEventListener("DOMContentLoaded", function () {
+
+  // data.jsonをもとにリンクのリストを表示
   fetch("data.json")
     .then(response => response.json())
     .then(data => {
-      const linkList = document.getElementById("linkList");
+      const linkListUl = document.getElementById("linkList");
 
       data.data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
@@ -60,17 +61,17 @@ document.addEventListener("DOMContentLoaded", function () {
         hr.classList.add("article")
         li.appendChild(hr)
 
-        linkList.appendChild(li);
+        linkListUl.appendChild(li);
       });
 
+      allLinkList = document.querySelectorAll('#linkList li');
       updateArticlesNumber();
       addedToListCounter();
     })
     .catch(error => console.error("Error fetching JSON:", error));
-});
 
-// categories.jsonを元にcategoryボタンのドロップダウンリストを作成
-document.addEventListener("DOMContentLoaded", function () {
+
+  // categories.jsonを元にcategoryボタンのドロップダウンリストを作成
   fetch("categories.json")
     .then(response => response.json())
     .then(data => {
@@ -118,8 +119,7 @@ const articleCounter = document.querySelector("#articleCounter");
 let articlesNumber = 0;
 function updateArticlesNumber() {
   let count = 0;
-  const liList = document.querySelectorAll("#linkList li");
-  Array.from(liList).filter(li => {
+  Array.from(allLinkList).filter(li => {
     const liStyle = getComputedStyle(li);
     if (liStyle.display !== "none") {
       count += 1;
@@ -148,7 +148,6 @@ document.querySelectorAll('.dropdown .btn').forEach(btn => {
 
 // カテゴリーボタンと検索ワードを元にリンクを絞り込み
 function filterLinks(displayMyListButtonPressed) {
-  const li = document.querySelectorAll('#linkList li');
   const searchInputValue = textSearchInput.value.toUpperCase();
   const searchInputTexts = searchInputValue.split(/[ 　]+/);
   const searchButtons = document.querySelectorAll('.searchButton:not(#category-3)');
@@ -159,10 +158,11 @@ function filterLinks(displayMyListButtonPressed) {
   const category3ButtonText = document.querySelector('#category-3').textContent.trim();
   const maruNumbers = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪", "⑫", "⑬", "⑭", "⑮", "⑯", "⑰", "⑱", "⑲", "⑳", "㉑", "㉒", "㉓", "㉔", "㉕", "㉖", "㉗", "㉘", "㉙", "㉚", "㉛", "㉜", "㉝", "㉞", "㉟", "㊱", "㊲", "㊳", "㊴", "㊵", "㊶", "㊷", "㊸", "㊹"]
 
-  for (let i = 0; i < li.length; i++) {
-    const h4 = li[i].querySelector('h4');
+  for (let i = 0; i < allLinkList.length; i++) {
+    const li = allLinkList[i]
+    const h4 = li.querySelector('h4');
     const txtValue = h4.textContent || h4.innerText;
-    const linkURL = li[i].querySelector('a').getAttribute('href');
+    const linkURL = li.querySelector('a').getAttribute('href');
     let shouldDisplay = false;
 
     if (displayMyListButtonPressed) {
@@ -195,7 +195,7 @@ function filterLinks(displayMyListButtonPressed) {
       }
     }
 
-    li[i].style.display = shouldDisplay ? '' : 'none';
+    li.style.display = shouldDisplay ? '' : 'none';
   }
   updateArticlesNumber()
 }
@@ -271,16 +271,15 @@ const listCounterElement = document.querySelector("#addedToListCounter")
 function addedToListCounter() {
   let count = savedList.URL_list.length;
   listCounterElement.textContent = count;
-  listCounterElement.classList.toggle("none", count == 0)
-  console.log("counted")
+  listCounterElement.classList.toggle("none", count == 0);
 }
 
 // My List表示ボタンがクリックされたときの処理
 const displayMyListButton = document.querySelector('#listButton');
 function displayMyList(forceShown) {
-  if(forceShown){
+  if (forceShown) {
     displayMyListButtonPressed = displayMyListButton.classList.add("shown");
-  }else{
+  } else {
     displayMyListButtonPressed = displayMyListButton.classList.toggle("shown");
   }
   filterLinks(displayMyListButtonPressed);
@@ -345,10 +344,10 @@ myListUploadButton.addEventListener('click', function () {
 
 myListFileInput.addEventListener("change", () => {
   const filename = myListFileInput.files[0].name;
-  const fileExtension = filename.split('.').pop(); 
-  if( fileExtension == "txt" || fileExtension == "json" ){
+  const fileExtension = filename.split('.').pop();
+  if (fileExtension == "txt" || fileExtension == "json") {
     settingContentUpdate();
-  }else{
+  } else {
     myListFileInput.value = '';
     alert('正しいデータをアップロードしてください。');
     settingContentUpdate();
@@ -386,7 +385,7 @@ function updateMyList(buttonName) {
     const uniqueURLs = [...new Set(newDataURLList)];
     savedList.URL_list = uniqueURLs
     localStorage.setItem('watchLaterList', JSON.stringify(savedList));
-    document.querySelectorAll("li.article").forEach(liElement => {
+    allLinkList.forEach(liElement => {
       liURL = liElement.querySelector('a').getAttribute("href");
       buttonElement = liElement.querySelector('.addButton')
       buttonText = buttonElement.querySelector('span')
