@@ -6,6 +6,7 @@
 
 #title {
   font-size: 16px;
+  cursor: pointer;
   width: fit-content;
   color: white;
   font-weight: bold;
